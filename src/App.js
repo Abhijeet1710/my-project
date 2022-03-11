@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Helloabi from "./abi/Hello.json";
 import Web3 from "web3";
 import './index.css';
+import Navbar from './components/Layout Pages/Navbar';
+import StartPage from './components/Layout Pages/StartPage';
 
 function App() {
 
@@ -70,9 +72,11 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <h1 className="text-orange-500" onClick={ setMsg }> { methodOp } </h1>
-    </div>
+    <div className="overflow-x-hidden main-page">
+        <Navbar />
+        <StartPage />
+        {/* <Footer /> */}
+      </div>
   );
 }
 

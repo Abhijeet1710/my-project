@@ -4,6 +4,7 @@
 
 body {
   margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -14,4 +15,41 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.main-page {
+  min-height: 100vh;
+  position:relative; 
+}
+
+.footer {
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.letsStart, .card {
+  /* transition-duration: 0.4s; */
+  background-color: #e3edf7;
+  box-shadow: 6px 6px 10px -1px rgba(0,0,0,0.15),
+              -6px -6px 10px -1px rgba(255,255,255,0.7);
+  border: 1px solid rgba(0, 0, 0, 0, 0); 
+  transition: transform 0.5s;
+}
+
+.letsStart:hover, .card:hover {
+  box-shadow: inset 4px 4px 6px -1px rgba(0,0,0,0.2),
+              inset -4px -4px 6px -1px rgba(255,255,255,0.7),
+              -0.5px -0.5px 0px rgba(255,255,255,1),
+              0.5px 0.5px 0px rgba(0,0,0,0.15),
+              0px 12px 10px -10px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0, 0, 0, 0, 0.01);
+  transform: translateY(2px);
+  /* cursor: pointer; */
+}
+
+.loginBtn {
+  background-color: #e3edf7;
+  transition: 0.5s ease-in-out;
 }
