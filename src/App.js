@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Helloabi from "./abi/Hello.json";
 import Web3 from "web3";
-import './index.css';
 import Navbar from './components/Layout Pages/Navbar';
 import StartPage from './components/Layout Pages/StartPage';
 
@@ -14,18 +13,14 @@ function App() {
   const [methodOp, setMethodOp] = useState("Click Here");
   const [deployedContract, setContract] = useState();
 
-  const loadWeb3 = async () => {
+  useEffect(() => {
+    init();
+  }, []);
+
+  const init = async () => {
     if (window.ethereum) {
       await window.ethereum.enable();
-    } else {
-      window.alert(
-        "Non-Ethereum browser detected. You should consider trying MetaMask!"
-      );
-    }
-  };
-
-  const loadBlockchainData = async () => {
-    setLoading(true);
+      setLoading(true);
     if (typeof window.ethereum == "undefined" ) {
       return;
     }
@@ -49,32 +44,23 @@ function App() {
       );
       
       setContract(ContractInstance);
-      console.log(ContractInstance);
-      
-      // const onr = await ContractInstance.methods.getA().call();
-      // setMethodOp(onr);
 
       setLoading(false);
     } catch {
       window.alert("the contract not deployed to detected network.");
       setloading2(true);
     }
+    } else {
+      window.alert(
+        "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      );
+    }
   };
-
-  const setMsg = async() => {
-      const onr = await deployedContract.methods.getA().call();
-      setMethodOp(onr);
-  }
-
-  useEffect(() => {
-    loadWeb3();
-    loadBlockchainData();
-  }, []);
 
   return (
     <div className="overflow-x-hidden main-page">
         <Navbar />
-        <StartPage />
+        <StartPage my_account={account} deployed_contract={deployedContract} />
         {/* <Footer /> */}
       </div>
   );

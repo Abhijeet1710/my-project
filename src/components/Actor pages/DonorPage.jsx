@@ -4,7 +4,7 @@ import Footer from '../Actor pages/Inside Components/Footer';
 import DonorSecondCard from './Inside Components/DonorSecondCard';
 import ChartOne from './Inside Components/ChartOne';
 
-function DonorPage( {actor} ) {
+function DonorPage( {actor, data} ) {
 
   const numbers = [1, 2, 3, 4, 5,6,7,8,9,14];
 
@@ -18,13 +18,13 @@ function DonorPage( {actor} ) {
             <h1 className="text-md mt-1 font-medium drop-shadow-xl text-orange-600">MY PROFILE</h1>
             <div className="p-2">
               <h1 className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-2"> Name </h1>
-              <h1 className="drop-shadow-xl  font-medium text-black"> Khamkar Abhijeet P. </h1>
+              <h1 className="drop-shadow-xl  font-medium text-black"> {data.donorName} </h1>
               <h1 className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4"> Email Id </h1>
-              <h1 className="drop-shadow-xl  font-medium text-black"> abhijeetkhamkar30"gmail.com </h1>
+              <h1 className="drop-shadow-xl  font-medium text-black"> { data.donorEmail } </h1>
               <h1 className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4">
                  <span className='drop-shadow-xl  font-medium text-orange-600'> {actor} </span> Address
               </h1>
-              <h1 className="drop-shadow-xl  font-medium text-neutral-400"> 0x78D6ABFCE9264a08d019f3938D18AB6d04... </h1>
+              <h1 className="drop-shadow-xl font-medium font-medium text-black"> {data.donorAddress} </h1>
             </div>
           </div>
 

@@ -5,8 +5,9 @@ import BenifactorPage from "../Actor pages/BenifactorPage";
 import DonorPage from "../Actor pages/DonorPage";
 import LoginPage from "../Layout Pages/LoginPage";
 
-function StartPage() {
+function StartPage( {my_account, deployed_contract} ) {
   const[login, setLogin] = useState(-1);
+  const[data, setData] = useState([]);
 
   const firstTime = (localStorage.getItem("newUser") != null) ? localStorage.getItem("newUser") : true;
 
@@ -19,18 +20,14 @@ function StartPage() {
     return (
       <LearnPage setLogin={setLogin}login={login} />
     );
-  }else if(login === 0) {
-    return (
-      <LoginPage setLogin={setLogin} />
-    );
   }
   else if(login === 1) {
     return (
-      <AdminPage actor={"Admin"}  />
+      <AdminPage actor={"Admin"} data={data}  />
     );
   } else if(login === 2) {
     return (
-      <DonorPage actor={"Donor"} />
+      <DonorPage actor={"Donor"} data={data} />
     );
   } else if(login === 3) {
     return (
@@ -39,7 +36,7 @@ function StartPage() {
   } 
   
   return (
-    <LoginPage setLogin={setLogin} />
+    <LoginPage setLogin={setLogin} my_account={my_account} setData={setData} deployed_contract={deployed_contract}  />
   );
 }
 

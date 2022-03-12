@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHandHoldingDollar, faCircleDollarToSlot, faUserGear, faUserLarge, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 
-function LoginPage( {setLogin} ) {
+function LoginPage( {setLogin, my_account, deployed_contract, setData} ) {
   AOS.init();
   const [active, setActive] = useState(1);
 
@@ -19,14 +19,17 @@ function LoginPage( {setLogin} ) {
   // 2 -> Donor Page
   // 3 -> Benifactor Page
 
-  const loginBtnClicked = () => {
+  const loginBtnClicked = async () => {
+    const onr = await deployed_contract.methods.donors(my_account).call();
+    console.log(onr);
+    setData(onr);
     setLogin(active);
   }
 
   return (
     <div className="">
       
-      <div className="w-4/5 overflow-hidden card lg:w-3/12 py-4 px-6 my-6 mx-auto h-200px rounded-xl "
+      <div className="w-4/5 overflow-hidden card lg:w-3/12 py-4 px-6 my-6 mx-auto h-200px rounded-xl"
         data-aos="zoom-up"
         data-aos-delay="20"
         data-aos-duration="1000"
@@ -56,7 +59,7 @@ function LoginPage( {setLogin} ) {
 
           
           <h2 className=" grow-0 text-sm drop-shadow-xl mt-8 font-medium text-black-600">Your Address </h2>
-          <label className="drop-shadow-xl text-xs font-medium text-neutral-400 placeholder"> 0x78D6ABFCE9264a08d019f3938D18AB6d04212C88 </label>
+          <label className="drop-shadow-xl text-xs font-medium text-neutral-400 placeholder"> {my_account} </label>
 
 
           <h2 className=" grow-0 text-sm drop-shadow-xl mt-2 font-medium text-black-600">Log in As </h2>

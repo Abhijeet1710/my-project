@@ -13,7 +13,7 @@ function DonorSecondCard( {i, item} ) {
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button className={` ${ i % 2 != -1 ? "bg-overlay" : ""}   mt-4 flex justify-between w-full px-8 py-4 text-lg font-large text-left text-purple-900  rounded-lg `}>
+              <Disclosure.Button className={` ${ i % 2 != -1 ? "" : ""}   mt-4 flex justify-between w-full px-8 py-4 text-lg font-large text-left text-purple-900  rounded-lg `}>
                 <h1 className="drop-shadow-xl  font-medium text-black"> {i} </h1>
 
                 <div className="flex flex-row">

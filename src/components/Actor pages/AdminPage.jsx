@@ -1,8 +1,8 @@
 import React from 'react'
 
-function AdminPage() {
+function AdminPage( {data}) {
   return (
-    <div className="w-full h-24 bg-slate-400">AdminPage</div>
+    <div className="w-full h-24 bg-slate-400">{data}</div>
   )
 }
 
