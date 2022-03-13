@@ -6,11 +6,7 @@ import StartPage from './components/Layout Pages/StartPage';
 
 function App() {
 
-  const [refresh, setrefresh] = useState(0);
-  const [loading2, setloading2] = useState(false);
   const [account, setAccount] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [methodOp, setMethodOp] = useState("Click Here");
   const [deployedContract, setContract] = useState();
 
   useEffect(() => {
@@ -20,14 +16,12 @@ function App() {
   const init = async () => {
     if (window.ethereum) {
       await window.ethereum.enable();
-      setLoading(true);
     if (typeof window.ethereum == "undefined" ) {
       return;
     }
     
     const web3 = new Web3(window.ethereum);
 
-    let url = window.location.href;
     const accounts = await web3.eth.getAccounts();
     setAccount(accounts[0]);
 
@@ -45,10 +39,8 @@ function App() {
       
       setContract(ContractInstance);
 
-      setLoading(false);
     } catch {
       window.alert("the contract not deployed to detected network.");
-      setloading2(true);
     }
     } else {
       window.alert(
@@ -61,7 +53,6 @@ function App() {
     <div className="overflow-x-hidden main-page">
         <Navbar />
         <StartPage my_account={account} deployed_contract={deployedContract} />
-        {/* <Footer /> */}
       </div>
   );
 }

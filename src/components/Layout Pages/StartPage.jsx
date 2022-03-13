@@ -23,7 +23,7 @@ function StartPage( {my_account, deployed_contract} ) {
   }
   else if(login === 1) {
     return (
-      <AdminPage actor={"Admin"} data={data}  />
+      <AdminPage actor={"Admin"} deployed_contract={deployed_contract}  />
     );
   } else if(login === 2) {
     return (
