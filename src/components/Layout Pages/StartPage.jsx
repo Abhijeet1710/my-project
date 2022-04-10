@@ -11,7 +11,6 @@ function StartPage( {my_account, deployed_contract} ) {
 
   const firstTime = (localStorage.getItem("newUser") != null) ? localStorage.getItem("newUser") : true;
 
-  console.log("Start Page " + firstTime + " "+ login);
   // 0 -> Log in Page
   // 1 -> Admin Page
   // 2 -> Donor Page
@@ -23,7 +22,7 @@ function StartPage( {my_account, deployed_contract} ) {
   }
   else if(login === 1) {
     return (
-      <AdminPage actor={"Admin"} deployed_contract={deployed_contract}  />
+      <AdminPage actor={"Admin"} my_account={my_account} deployed_contract={deployed_contract}  />
     );
   } else if(login === 2) {
     return (

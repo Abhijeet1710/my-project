@@ -6,20 +6,22 @@ import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles
 
 function DonorSecondCard( {item} ) {
-  // AOS.init();
+
+  function approvedProject () {
+    
+  }
 
   return (
-    <div>
-      <h1> {item} </h1>
-        {/* <Disclosure>
+    <div>      
+        <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button className={`  mt-4 flex justify-between w-full px-8 py-4 text-lg font-large text-left text-purple-900  rounded-lg `}>
+              <Disclosure.Button className={`  mt-4 flex justify-between bg-cyan-50 w-full px-8 py-4 text-lg font-large text-left text-purple-900  rounded-lg `}>
                 <h1 className="drop-shadow-xl  font-medium text-black"> {item.projectName} </h1>
 
                 <div className="flex flex-row">
-                    <span className="mr-2 rounded-full px-3 font-medium py-1 text-white text-sm bg-green-600"> {item.isApproved} </span>
-                    <span className="mr-4 rounded-full px-3 font-medium py-1 text-white text-sm bg-red-500"> {item.amountGot} </span>
+                    <span className="mr-2 rounded-full px-3 font-medium py-1 text-white text-sm bg-green-600" onClick={approvedProject}> {item.isApproved ? "Approved" : "Not Approved"} </span>
+                    <span className="mr-4 rounded-full px-3 font-medium py-1 text-white text-sm bg-red-500"> {item.amountGot} Eth </span>
                     <FontAwesomeIcon className={`${
                         open ? 'transform rotate-180' : ''
                     } w-5 h-5 text-purple-500`} icon={faAngleDown} />
@@ -34,7 +36,7 @@ function DonorSecondCard( {item} ) {
               </Disclosure.Panel>
             </>
           )}
-        </Disclosure> */}
+        </Disclosure>
     </div>
   )
 }

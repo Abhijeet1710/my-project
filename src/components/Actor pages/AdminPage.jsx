@@ -3,35 +3,34 @@ import DonorSecondCard from './Inside Components/DonorSecondCard';
 import ChartOne from './Inside Components/ChartOne';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import Show from './Inside Components/Show';
+import Loader from '../Layout Pages/Loader';
 
-function AdminPage( {actor, deployed_contract} ) {
+function AdminPage( {my_account, actor, deployed_contract} ) {
 
-  let projects = [];
   const [loading, setLoading] = useState(true);
-  let projectsList;
+  const [data, setData] = useState([]);
+  const[size, setSize] = useState(-1);
 
   useEffect(() => {
-    async function getProjects() {
-      const size = await deployed_contract.methods.totalProjects().call();
-  
-      for(let i=0; i<size; i++) {
-        const pr = await deployed_contract.methods.charityProjects(i).call()
-        
-        projects.push(pr);
+    async function loadData() {
+      if(size == -1) {
+        let n = await deployed_contract.methods.length().call();
+        setSize(n);
       }
-
-      
+      if(size == 0) setLoading(false);
+      if(size > 0) {
+        let obj = await deployed_contract.methods.charityProjects(size).call();
+        setData([...data, obj]);
+        setSize(size-1);
+      }
     }
 
-    getProjects();
-    setLoading(false);
-  });
-
-  // console.log(projects);
-  for(let i=0; i<4; i++) console.log(projects[i]);
-
+    loadData();
+  }, [size]);  
+  
   if(loading) {
-    return <h1> Loading ... </h1>
+    return <div className='w-full flex justify-center mt-6'> <Loader /> </div> 
   }
 
   return ( 
@@ -85,9 +84,10 @@ function AdminPage( {actor, deployed_contract} ) {
 
         <div className="mt-12 card px-4 py-8 rounded-lg">
           <h1 className="text-lg mt-1 mb-8 font-medium drop-shadow-xl text-orange-600"> All Projects </h1>
-          
-          <div className="px-4">
-            { projectsList }
+          <div className="px-4"> 
+          {
+            data.map((it) => <DonorSecondCard key={Math.random()} item={it} />)
+          }
           </div>
         </div>
       </div>

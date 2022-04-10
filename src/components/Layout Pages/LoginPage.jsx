@@ -22,9 +22,14 @@ function LoginPage( {setLogin, my_account, deployed_contract, setData} ) {
 
   const btnClicked = async () => {
 
-    // await deployed_contract.methods.addNewProject("pro 3", "desc 3", 90).send({ from: my_account })
+    // await deployed_contract.methods.addNewProject("What is Google", "Google LLC is an American multinational technology company that focuses on artificial intelligence, search engine, online advertising, cloud computing, computer software, quantum computing, e-commerce, and consumer electronics.", 100).send({ from: my_account })
     //   .once('receipt', (receipt) => {
-    //   console.log(receipt);
+    //   // console.log(receipt);
+    // });
+
+    // await deployed_contract.methods.addNewProject("Kids Education Need", "Games, puzzles, and other fun activities to help kids practice letters, numbers, and more! Step-by-Step Learning Path designed to help kids learn math, reading, science, and more. Learn on Any Device. Completely Child Safe. Learn Anywhere. Add Up to 3 Kids.", 200).send({ from: my_account })
+    //   .once('receipt', (receipt) => {
+    //   // console.log(receipt);
     // });
 
     // console.log(active);
