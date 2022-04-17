@@ -30,7 +30,7 @@ function StartPage( {my_account, deployed_contract} ) {
     );
   } else if(login === 3) {
     return (
-      <BenifactorPage actor={"Benifactor"}  />
+      <BenifactorPage actor={"Benifactor"} my_account={my_account} deployed_contract={deployed_contract}  />
     );
   } 
   

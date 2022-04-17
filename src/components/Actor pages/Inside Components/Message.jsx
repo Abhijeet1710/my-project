@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 
-function Message( {title} ) {
+function Message( {title = "Nothing to show"} ) {
   return (
-      <div className='flex flex-row'>
-          <img className='w-12 h-12'  src="https://img.icons8.com/cotton/64/000000/empty-box.png"/>
-          <h1 className="flex drop-shadow-xl ml-4 mt-4 text-black"> {title} ! </h1>
+      <div className='flex align-middle'>
+          <img className='w-8 h-8' src="https://img.icons8.com/plumpy/96/000000/empty-box.png"/>
+          <p className="flex drop-shadow-xl ml-2 mt-1 text-black"> {title} ! </p>
       </div>
     
   )
 }
 
-export default Message
+export default Message;

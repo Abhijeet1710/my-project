@@ -3,83 +3,147 @@ import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHandHoldingDollar, faCircleDollarToSlot, faUserGear, faUserLarge, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import {CgSpinner} from 'react-icons/cg';
+import Loader from './Loader';
 
 
 function LoginPage( {setLogin, my_account, deployed_contract, setData} ) {
   AOS.init();
+
+  const LOG_IN = "LOG_IN";
+  const SIGN_UP = "SIGN_UP";
+
   const [active, setActive] = useState(1);
-  const [useCase, setUseCase] = useState("LOG-IN");
+  const [loading, setLoading] = useState(false);
 
-  //Active
-  // 1 -> Admin
-  // 2 -> Donor
-  // 3 -> Benifactor
+  const[loginState, setLoginState] = useState(true);
 
-  // 0 -> Login Page
-  // 1 -> Admin Page
-  // 2 -> Donor Page
-  // 3 -> Benifactor Page
 
-  const btnClicked = async () => {
+  function validate(ipName, ipEmail) {
+    // const ipName = document.getElementById("ipName").value;
+    // const ipEmail = document.getElementById("ipEmail").value;
 
-    // await deployed_contract.methods.addNewProject("What is Google", "Google LLC is an American multinational technology company that focuses on artificial intelligence, search engine, online advertising, cloud computing, computer software, quantum computing, e-commerce, and consumer electronics.", 100).send({ from: my_account })
-    //   .once('receipt', (receipt) => {
-    //   // console.log(receipt);
-    // });
-
-    // await deployed_contract.methods.addNewProject("Kids Education Need", "Games, puzzles, and other fun activities to help kids practice letters, numbers, and more! Step-by-Step Learning Path designed to help kids learn math, reading, science, and more. Learn on Any Device. Completely Child Safe. Learn Anywhere. Add Up to 3 Kids.", 200).send({ from: my_account })
-    //   .once('receipt', (receipt) => {
-    //   // console.log(receipt);
-    // });
-
-    // console.log(active);
-    setLogin(active);
-    return;
-
-    const ipName = document.getElementById("ipName").value;
-    const ipEmail = document.getElementById("ipEmail").value;
-
-    if(ipName == "" || ipEmail == "" || my_account == "") {
+    if(ipName === "" || ipEmail === "" || my_account === "") {
       alert("Please fill all fields");
-      return;
+      return false;
     }
 
-    if(useCase == "LOG-IN") {
-      if(active == 2) { //Donor
+    return true;
+  }
+
+  async function login(ipName, ipEmail) {
+
+    switch(active) {
+      case 1: {
+        let admin = await deployed_contract.methods.getAdmin().call();
+
+        if(admin === my_account) {
+          setLoading(false);
+          setLogin(1);
+        }
+        else {
+          setLoading(false);
+          alert("You are not Admin");
+        } 
+
+        break;
+      }
+
+      case 2: {
         const onr = await deployed_contract.methods.donors(my_account).call();
-        if(onr.donorName == "") {
-          alert("Account not found !");
-          return;
-        }
-        console.log(onr);
 
-      }else if(active == 3) { //Benifactor
+        if(onr.donorName === "") {
+          setLoading(false);
+          alert("Account not found !");
+        } 
+        else{
+          setLoading(false);
+          setLogin(2);
+        } 
+
+        break;
+      }
+
+      case 3: {
         const onr = await deployed_contract.methods.benifactors(my_account).call();
-        if(onr.donorName == "") {
+
+        if(onr.benifactorName === ""){
+          setLoading(false);
           alert("Account not found !");
-          return;
-        }
-        console.log(onr);
-      }
-      
-    }else {
-      if(active == 3) { //Benifactor
-        deployed_contract.methods.addNewBenifactor(ipName, ipEmail).send({ from: my_account })
-        .once('receipt', (receipt) => {
-          console.log(receipt);
-        });
+        } 
+        else {
+          setLoading(false);
+          setLogin(3);
+        } 
 
-      }
-      else if(active == 2) {  //Donor
-        deployed_contract.methods.addNewDonor(ipName, ipEmail).send({from: my_account})
-        .once('receipt', (receipt) => {
-          console.log(receipt);
-        });
-
+        break;
       }
     }
 
   }
+
+  async function signup(ipName, ipEmail){
+
+    switch(active) {
+      case 2: {
+        await deployed_contract.methods.addNewDonor(ipName, ipEmail).send({from: my_account})
+        .once('receipt', (receipt) => {
+
+          if(receipt.events.returnMessage.returnValues.status) {
+            alert("Account Created Succesfully You can Login Now");
+            setLoading(false);
+            setLoginState(!loginState);
+          }
+          else {
+            setLoading(false);
+            alert(receipt.events.returnMessage.returnValues.message);
+          } 
+
+        });
+
+        break;
+      }
+
+      case 3: {
+        await deployed_contract.methods.addNewBenifactor(ipName, ipEmail).send({ from: my_account })
+        .once('receipt', (receipt) => {
+
+          if(receipt.events.returnMessage.returnValues.status) {
+            alert("Account Created Succesfully You can Login Now");
+            setLoading(false);
+            setLoginState(!loginState);
+          }
+          else {
+            setLoading(false);
+            alert(receipt.events.returnMessage.returnValues.message);
+          } 
+        });
+
+        break;
+      }
+    }
+
+  }
+
+  const btnClicked = async () => {
+
+    const ipName = document.getElementById("ipName").value;
+    const ipEmail = document.getElementById("ipEmail").value;
+    if(!validate(ipName, ipEmail)) return;
+
+    setLoading(true);
+    loginState ? await login(ipName, ipEmail) : await signup(ipName, ipEmail);
+  }
+
+  // if(my_account.length === 0 ) 
+  // return (
+  //   // <div className='flex align-items-center w-full justify-center'>
+  //   //   <span className='ml-4 font-medium'>Wait....  Facing issues to connect Metamask ! </span>
+  //   // </div> 
+  // );
+
+  if(my_account.length === 0) 
+  return <div className='w-full flex justify-center mt-6'> <Loader message={"Wait... Connecting to Metamask"} /> </div> 
 
   return (
     <div className="">
@@ -92,10 +156,11 @@ function LoginPage( {setLogin, my_account, deployed_contract, setData} ) {
         data-aos-once="false"
         data-aos-anchor-placement="top-center"
         > 
-        <h1 className="text-xl mt-2 font-medium drop-shadow-xl text-orange-600"> { useCase } </h1>
+        <h1 className="text-xl mt-2 font-medium drop-shadow-xl text-orange-600"> { loginState ? LOG_IN : SIGN_UP } </h1>
         
         <div className="px-2">
           <div className="w-full mt-6 border-b border-orange-400">
+
             <label className="drop-shadow-xl text-xs font-medium text-neutral-400"> Full Name </label>
             <div className="flex flex-row">
               <FontAwesomeIcon className="drop-shadow-xl mr-3 ml-1 py-2" icon={faUserLarge} />   
@@ -151,10 +216,25 @@ function LoginPage( {setLogin, my_account, deployed_contract, setData} ) {
 
           </div>
 
-          <button className="my-2 drop-shadow-lg hover:drop-shadow-xl w-full text-md font-medium text-orange-600 border rounded-3xl py-2 mt-4 border-orange-500 bg-primary"
-          onClick={btnClicked}> {useCase == "LOG-IN" ? "Log in" : "Sign up"} </button>
-          <label className=" drop-shadow-xl text-xs font-medium text-neutral-400"> {` ${useCase == "LOG-IN" ? "Don't have an Account ?" : "Already have an Account"} `}  
-            <span className="text-blue-500 cursor-pointer" onClick={ () => {setUseCase( useCase == "LOG-IN" ? "SIGN-UP" : "LOG-IN")} }> {` ${useCase == "LOG-IN" ? "Create One" : "Log in"} `} </span>
+          
+          {/* Login SignUp Button  */}
+          <div 
+            onClick={btnClicked}
+            className='cursor-pointer flex justify-center py-2 my-2 drop-shadow-lg hover:drop-shadow-xl w-full text-md font-medium text-orange-600 border rounded-3xl mt-4 border-orange-500 bg-primary'>
+              <CgSpinner className={`animate-spin my-1 ${loading ? "block" : "hidden"}`} />
+              <span className='ml-2'> 
+                    { loginState ? LOG_IN : SIGN_UP }
+              </span>
+          </div>
+
+
+          {/* Navigate between sign up and login Button */}
+          <label className=" drop-shadow-xl text-xs font-medium text-neutral-400"> {` ${loginState ? "Don't have an Account ?" : "Already have an Account"} `}  
+              <span 
+                className="text-blue-500 cursor-pointer"
+                onClick={ () => {setLoginState(!loginState)} }>
+                  {` ${loginState ? SIGN_UP : LOG_IN} `} 
+              </span>
           </label>
 
         </div>

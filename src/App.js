@@ -3,6 +3,7 @@ import Helloabi from "./abi/Hello.json";
 import Web3 from "web3";
 import Navbar from './components/Layout Pages/Navbar';
 import StartPage from './components/Layout Pages/StartPage';
+import Footer from "./components/Actor pages/Inside Components/Footer";
 
 function App() {
 
@@ -25,7 +26,7 @@ function App() {
     const accounts = await web3.eth.getAccounts();
     setAccount(accounts[0]);
 
-    if (accounts.length == 0) {
+    if (accounts.length === 0) {
       return;
     }
     const networkId = await web3.eth.net.getId();
@@ -53,6 +54,7 @@ function App() {
     <div className="overflow-x-hidden main-page">
         <Navbar />
         <StartPage my_account={account} deployed_contract={deployedContract} />
+        <Footer />
       </div>
   );
 }

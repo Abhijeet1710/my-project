@@ -1,12 +1,12 @@
 import React from 'react';
-import { ImSpinner2 } from 'react-icons/im';
+import img from "./icons8-loading-sign-96.png";
 
-const Loader = () => {
+const Loader = ({message = "Loading ..."}) => {
   return (
-    <div className='flex align-items-center'>
+    <div className='flex'>
          
-        <ImSpinner2 className='w-7 h-7 animate-spin' />
-        <span className='ml-4 font-medium'> Loading ... </span>
+        <img className='w-7 h-7 animate-spin' src={img}/>
+        <span className='ml-2 font-medium'> {message} </span>
 
     </div>
   )

@@ -1,13 +1,21 @@
 import React from 'react'
-import DonorFirstCard from './Inside Components/DonorFirstCard';
-import Footer from '../Actor pages/Inside Components/Footer';
 import DonorSecondCard from './Inside Components/DonorSecondCard';
 import ChartOne from './Inside Components/ChartOne';
 import Message from './Inside Components/Message';
+import AddProjectPopup from './Inside Components/AddProjectPopup';
 
-function BenifactorPage( {actor} ) {
+function BenifactorPage( {my_account, actor, deployed_contract} ) {
  
   const numbers = [];
+
+  async function addProject (title, desc, amtReq) {
+    console.log(title, desc, amtReq);
+
+    await deployed_contract.methods.addNewProject(title, desc, amtReq).send({ from: my_account })
+      .once('receipt', (receipt) => {
+        alert('Project added Succesfully');
+    });
+  }
 
   return ( 
     <>
@@ -54,22 +62,26 @@ function BenifactorPage( {actor} ) {
             </div>
           </div>
         </div>
+
+        {/* Add New Project Section */}
       
+        <div className='mt-10'>
+           <AddProjectPopup addProject={addProject} /> 
+        </div>
 
         {/* Participated Projets */}
 
-        <div className="mt-12 card px-4 py-8 rounded-lg">
+        <div className="mt-4 card px-4 py-8 rounded-lg">
           <h1 className="text-lg mt-1 mb-8 font-medium drop-shadow-xl text-orange-600">Participated Projects & Amount Donated</h1>
           
           <div className="px-4">
             
             {
-                (numbers.length != 0) ?
+                (numbers.length !== 0) ?
                  numbers.map((item, index) => {
                   return <DonorSecondCard i={item} />;
                 })
                 : <Message title={"No Projects to Show"} />
-              
             }
 
           </div>
@@ -77,25 +89,24 @@ function BenifactorPage( {actor} ) {
 
         {/* All Projets */}
 
-        <div className="mt-4 card p-4 py-8 rounded-lg">
+        <div className="mt-4 mb-8 card p-4 py-8 rounded-lg">
           <h1 className="text-lg mt-1 mb-8 font-medium drop-shadow-xl text-orange-600">Approved Projects & Amount Required</h1>
           
           <div className="px-4">
             
             {
-                (numbers.length != 0) ?
+                (numbers.length !== 0) ?
                  numbers.map((item, index) => {
                   return <DonorSecondCard i={item} />;
                 })
                 : <Message title={"No Projects to Show"} />
-              
             }
 
           </div>
         </div>
 
       </div>
-
+      
       </>
       )
 }

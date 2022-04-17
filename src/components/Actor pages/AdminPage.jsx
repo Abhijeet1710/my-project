@@ -3,8 +3,8 @@ import DonorSecondCard from './Inside Components/DonorSecondCard';
 import ChartOne from './Inside Components/ChartOne';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import Show from './Inside Components/Show';
 import Loader from '../Layout Pages/Loader';
+import Message from '../Actor pages/Inside Components/Message';
 
 function AdminPage( {my_account, actor, deployed_contract} ) {
 
@@ -12,26 +12,37 @@ function AdminPage( {my_account, actor, deployed_contract} ) {
   const [data, setData] = useState([]);
   const[size, setSize] = useState(-1);
 
+  const adminName = "CharityChain - Admin";
+  const adminEmail = "admin@charitychain.in";
+  const adminAddresss = my_account;
+
   useEffect(() => {
+    if(size === 0) {
+      setLoading(false);
+      return;
+    } 
+
+    loadData();
+
     async function loadData() {
-      if(size == -1) {
-        let n = await deployed_contract.methods.length().call();
+      if(size === 0) {
+        setLoading(false);
+        return;
+      } 
+
+      if(size === -1) {
+        let n = await deployed_contract.methods.totalProjects().call();
         setSize(n);
       }
-      if(size == 0) setLoading(false);
       if(size > 0) {
         let obj = await deployed_contract.methods.charityProjects(size).call();
         setData([...data, obj]);
         setSize(size-1);
       }
     }
-
-    loadData();
   }, [size]);  
   
-  if(loading) {
-    return <div className='w-full flex justify-center mt-6'> <Loader /> </div> 
-  }
+  if(loading) return <div className='w-full flex justify-center mt-6'> <Loader /> </div> 
 
   return ( 
     <>
@@ -43,13 +54,14 @@ function AdminPage( {my_account, actor, deployed_contract} ) {
             <h1 className="text-md mt-1 font-medium drop-shadow-xl text-orange-600">MY PROFILE</h1>
             <div className="p-2">
               <h1 className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-2"> Name </h1>
-              <h1 className="drop-shadow-xl  font-medium text-black"> data.donorName </h1>
+              <h1 className="drop-shadow-xl  font-medium text-black"> {adminName} </h1>
               <h1 className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4"> Email Id </h1>
-              <h1 className="drop-shadow-xl  font-medium text-black"> data.donorEmail </h1>
+              <h1 className="drop-shadow-xl  font-medium text-black"> {adminEmail} </h1>
               <h1 className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4">
                  <span className='drop-shadow-xl  font-medium text-orange-600'> {actor} </span> Address
               </h1>
-              <h1 className="drop-shadow-xl font-medium font-medium text-black"> data.donorAddress </h1>
+              <div className="drop-shadow-xl font-medium font-medium text-black"> {adminAddresss.substr(0, adminAddresss.length-4)} ... </div>
+              {/* <p> {adminAddresss} </p> */}
             </div>
           </div>
 
@@ -82,11 +94,13 @@ function AdminPage( {my_account, actor, deployed_contract} ) {
 
         {/* All Projets */}
 
-        <div className="mt-12 card px-4 py-8 rounded-lg">
+        <div className="mt-12 mb-8 card px-4 py-8 rounded-lg">
           <h1 className="text-lg mt-1 mb-8 font-medium drop-shadow-xl text-orange-600"> All Projects </h1>
           <div className="px-4"> 
           {
-            data.map((it) => <DonorSecondCard key={Math.random()} item={it} />)
+            data.length === 0 ? 
+            <Message /> : 
+            data.map((it) => <DonorSecondCard key={it.projectId} item={it} />)
           }
           </div>
         </div>
