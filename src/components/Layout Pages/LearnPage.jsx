@@ -99,9 +99,10 @@ function LearnPage( {setLogin, login } ) {
               and monitor where, when, and to whom charity donations
               were disbursed." />
 
-        <div className="flex flex-row-reverse my-6">
-          <button className="px-4 py-2 font-semibold rounded-md letsStart" onClick={letsStartBtnClicked}> Lets Start <FontAwesomeIcon className="ml-2" icon={faArrowRight} />  </button>
-          {/* <FontAwesomeIcon className="ml-1" icon={faArrowRight} /> */}
+        <div className="flex justify-end mt-4 mb-12">
+          <button className="flex px-4 py-3 font-semibold rounded-md letsStart" onClick={letsStartBtnClicked}> Lets Start
+           <img width="22px" height="22px" className="ml-2" src="https://img.icons8.com/plumpy/96/000000/chevron-right.png"/>  
+          </button> 
         </div>
     </div>
     </>
