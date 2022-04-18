@@ -5,13 +5,17 @@ import { faAngleDown } from "@fortawesome/free-solid-svg-icons"
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles
 
-function DonorSecondCard( {item} ) {
+function DonorSecondCard( {item, deployed_contract, my_account} ) {
 
   const[isApproved, setApproved] = useState(item.isApproved);
 
-  function approveProject(id) {
-    setApproved(true);
-    console.log(id);
+  async function approveProject(id) {
+    
+    await deployed_contract.methods.approvProject(id).send({ from: my_account })
+      .once('receipt', (receipt) => {
+        setApproved(true);
+    });
+    
   }
 
   return (

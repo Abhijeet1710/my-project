@@ -110,3 +110,23 @@ function LearnPage( {setLogin, login } ) {
 }
 
 export default LearnPage;
+
+// Persistent
+
+// CTC = 4.71
+// basic = 11800
+// Gross = 4.3, Monthly = 35.8K = 36K
+
+
+// InHand = Fixed - PF - Gratiuity - Taxes
+
+
+// Accolite Digital
+
+// CTC = 5 + 2L Tenour Bonus (40K every 6 months 5 times)
+// basic = 18496
+// Gross = 4.23, Monthly = 35.1K = 35 + 7K => 42K
+// Fixed = 4.43
+
+//Inhand = 36916 - 1800 - 896 = 34220
+

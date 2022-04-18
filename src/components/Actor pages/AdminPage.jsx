@@ -1,8 +1,7 @@
 import React from 'react';
 import DonorSecondCard from './Inside Components/DonorSecondCard';
 import ChartOne from './Inside Components/ChartOne';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect,useState } from 'react';
 import Loader from '../Layout Pages/Loader';
 import Message from '../Actor pages/Inside Components/Message';
 
@@ -42,7 +41,11 @@ function AdminPage( {my_account, actor, deployed_contract} ) {
     }
   }, [size]);  
   
-  if(loading) return <div className='w-full flex justify-center mt-6'> <Loader /> </div> 
+  if(loading) return (
+    <div className='w-full flex justify-center mt-6'> 
+      <Loader />
+    </div> 
+    );
 
   return ( 
     <>
@@ -100,7 +103,7 @@ function AdminPage( {my_account, actor, deployed_contract} ) {
           {
             data.length === 0 ? 
             <Message /> : 
-            data.map((it) => <DonorSecondCard key={it.projectId} item={it} />)
+            data.map((it) => <DonorSecondCard key={it.projectId} item={it} deployed_contract={deployed_contract} my_account={my_account} />)
           }
           </div>
         </div>
