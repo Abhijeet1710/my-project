@@ -3,20 +3,31 @@ import { Disclosure } from '@headlessui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons"
 
-function DonorFirstCard( {item, deployed_contract, my_account} ) {
+function AdminFirstCard( {item, deployed_contract, my_account} ) {
+
+  const[isApproved, setApproved] = useState(item.isApproved);
+
+  async function approveProject(id) {
+    
+    await deployed_contract.methods.approvProject(id).send({ from: my_account })
+      .once('receipt', (receipt) => {
+        setApproved(true);
+    });
+    
+  }
 
   return (
     <div>      
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button className={`  mt-4 flex justify-between bg-cyan2 w-full px-8 py-4 text-lg font-large text-left text-purple-900  rounded-lg `}>
+              <Disclosure.Button className={` mt-4 flex justify-between bg-cyan2 w-full px-8 py-4 text-lg font-large text-left text-purple-900  rounded-lg `}>
                 <h1 className="drop-shadow-xl  font-medium text-black"> {item.projectName} </h1>
 
                 <div className="flex flex-row">
                     <span
                       className="mr-2 rounded-full px-3 font-medium py-1 text-white text-sm bg-green-600">
-                         Approved
+                         {isApproved ? "Approved" : "Not Approved"}
                     </span>
 
                     <span className="mr-4 rounded-full px-3 font-medium py-1 text-white text-sm bg-red-500">
@@ -43,9 +54,11 @@ function DonorFirstCard( {item, deployed_contract, my_account} ) {
                         <span className="drop-shadow-xl font-medium text-black"> Amount Received  : </span>
                         <span className="drop-shadow-xl text-xl font-medium text-black"> {item.amountGot} </span>
                       </div>
-                      <div>
-                        <span className="drop-shadow-xl font-medium text-black"> Amount Donated  : </span>
-                        <span className="drop-shadow-xl text-xl font-medium text-black"> {item.amountGot} </span>
+                      <div 
+                      className={`${isApproved ? 'hidden' : 'block'} mt-4`}> 
+                        <span
+                         className="rounded-full px-3 font-medium py-1 text-white text-sm bg-green-600 cursor-pointer"
+                         onClick={ () => approveProject(item.projectId) }> Approve Project </span>
                       </div>
                     </div>
                 </div>
@@ -57,4 +70,4 @@ function DonorFirstCard( {item, deployed_contract, my_account} ) {
   )
 }
 
-export default DonorFirstCard;
+export default AdminFirstCard

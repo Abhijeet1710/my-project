@@ -6,8 +6,7 @@ import { faHandHoldingDollar, faCircleDollarToSlot, faUserGear, faUserLarge, faE
 import {CgSpinner} from 'react-icons/cg';
 import Loader from './Loader';
 
-
-function LoginPage( {setLogin, my_account, deployed_contract, setData} ) {
+function LoginPage( {setLogin, my_account, deployed_contract} ) {
   AOS.init();
 
   const LOG_IN = "LOG_IN";
@@ -133,20 +132,19 @@ function LoginPage( {setLogin, my_account, deployed_contract, setData} ) {
 
     setLoading(true);
     loginState ? await login(ipName, ipEmail) : await signup(ipName, ipEmail);
+    setLoading(false);
   }
 
-  // if(my_account.length === 0 ) 
-  // return (
-  //   // <div className='flex align-items-center w-full justify-center'>
-  //   //   <span className='ml-4 font-medium'>Wait....  Facing issues to connect Metamask ! </span>
-  //   // </div> 
-  // );
-
-  if(my_account.length === 0) 
-  return <div className='w-full flex justify-center mt-6'> <Loader message={"Wait... Connecting to Metamask"} /> </div> 
+  if(my_account.length === 0) { 
+    return ( 
+      <div className=''>
+        <Loader /> 
+      </div>
+    )
+  };
 
   return (
-    <div className="">
+    <div className="mt-16">
       
       <div className="w-4/5 overflow-hidden card lg:w-3/12 pt-2 pb-8 px-6 mt-6 mx-auto h-200px rounded-xl"
         data-aos="zoom-up"
@@ -220,7 +218,7 @@ function LoginPage( {setLogin, my_account, deployed_contract, setData} ) {
           {/* Login SignUp Button  */}
           <div 
             onClick={btnClicked}
-            className='cursor-pointer flex justify-center py-2 my-2 drop-shadow-lg hover:drop-shadow-xl w-full text-md font-medium text-orange-600 border rounded-3xl mt-4 border-orange-500 bg-primary'>
+            className='loginBtn cursor-pointer text-white flex justify-center py-2 my-2 drop-shadow-lg w-full text-md font-medium border rounded-3xl mt-4 border-orange-500'>
               <CgSpinner className={`animate-spin my-1 ${loading ? "block" : "hidden"}`} />
               <span className='ml-2'> 
                     { loginState ? LOG_IN : SIGN_UP }
@@ -229,7 +227,7 @@ function LoginPage( {setLogin, my_account, deployed_contract, setData} ) {
 
 
           {/* Navigate between sign up and login Button */}
-          <label className=" drop-shadow-xl text-xs font-medium text-neutral-400"> {` ${loginState ? "Don't have an Account ?" : "Already have an Account"} `}  
+          <label className="drop-shadow-xl text-xs font-medium text-neutral-400"> {` ${loginState ? "Don't have an Account ?" : "Already have an Account"} `}  
               <span 
                 className="text-blue-500 cursor-pointer"
                 onClick={ () => {setLoginState(!loginState)} }>

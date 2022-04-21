@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 import { Disclosure } from '@headlessui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons"
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
-function DonorFirstCard( {item, deployed_contract, my_account} ) {
+
+function BenifactorFirstCard( {item, deployed_contract, my_account} ) {
 
   return (
     <div>      
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button className={`  mt-4 flex justify-between bg-cyan2 w-full px-8 py-4 text-lg font-large text-left text-purple-900  rounded-lg `}>
+              <Disclosure.Button className={`mt-4 flex justify-between bg-cyan2 w-full px-8 py-4 text-lg font-large text-left text-purple-900  rounded-lg `}>
                 <h1 className="drop-shadow-xl  font-medium text-black"> {item.projectName} </h1>
 
                 <div className="flex flex-row">
                     <span
-                      className="mr-2 rounded-full px-3 font-medium py-1 text-white text-sm bg-green-600">
+                      className="mr-2 rounded-full px-3 font-medium py-1 text-gray-500 text-sm bg-cyan-200">
                          Approved
                     </span>
 
-                    <span className="mr-4 rounded-full px-3 font-medium py-1 text-white text-sm bg-red-500">
+                    <span className="mr-4 rounded-full px-3 font-medium py-1 text-gray-500 text-sm bg-red-300">
                        {item.amountGot} Eth 
                     </span>
 
@@ -43,10 +44,6 @@ function DonorFirstCard( {item, deployed_contract, my_account} ) {
                         <span className="drop-shadow-xl font-medium text-black"> Amount Received  : </span>
                         <span className="drop-shadow-xl text-xl font-medium text-black"> {item.amountGot} </span>
                       </div>
-                      <div>
-                        <span className="drop-shadow-xl font-medium text-black"> Amount Donated  : </span>
-                        <span className="drop-shadow-xl text-xl font-medium text-black"> {item.amountGot} </span>
-                      </div>
                     </div>
                 </div>
               </Disclosure.Panel>
@@ -57,4 +54,4 @@ function DonorFirstCard( {item, deployed_contract, my_account} ) {
   )
 }
 
-export default DonorFirstCard;
+export default BenifactorFirstCard

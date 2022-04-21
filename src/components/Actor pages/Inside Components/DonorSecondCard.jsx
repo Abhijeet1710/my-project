@@ -2,19 +2,15 @@ import React, { useState } from 'react';
 import { Disclosure } from '@headlessui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons"
-import AOS from 'aos';
-import 'aos/dist/aos.css'; // You can also use <link> for styles
 
 function DonorSecondCard( {item, deployed_contract, my_account} ) {
 
-  const[isApproved, setApproved] = useState(item.isApproved);
-
-  async function approveProject(id) {
+  async function donateEther(id) {
     
-    await deployed_contract.methods.approvProject(id).send({ from: my_account })
-      .once('receipt', (receipt) => {
-        setApproved(true);
-    });
+    // await deployed_contract.methods.approvProject(id).send({ from: my_account })
+    //   .once('receipt', (receipt) => {
+    //     setApproved(true);
+    // });
     
   }
 
@@ -23,13 +19,13 @@ function DonorSecondCard( {item, deployed_contract, my_account} ) {
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button className={`  mt-4 flex justify-between bg-cyan-50 w-full px-8 py-4 text-lg font-large text-left text-purple-900  rounded-lg `}>
+              <Disclosure.Button className={`  mt-4 flex justify-between bg-cyan2 w-full px-8 py-4 text-lg font-large text-left text-purple-900  rounded-lg `}>
                 <h1 className="drop-shadow-xl  font-medium text-black"> {item.projectName} </h1>
 
                 <div className="flex flex-row">
                     <span
                       className="mr-2 rounded-full px-3 font-medium py-1 text-white text-sm bg-green-600">
-                         {isApproved ? "Approved" : "Not Approved"}
+                         Approved
                     </span>
 
                     <span className="mr-4 rounded-full px-3 font-medium py-1 text-white text-sm bg-red-500">
@@ -57,10 +53,10 @@ function DonorSecondCard( {item, deployed_contract, my_account} ) {
                         <span className="drop-shadow-xl text-xl font-medium text-black"> {item.amountGot} </span>
                       </div>
                       <div 
-                      className={`${isApproved ? 'hidden' : 'block'} mt-4`}> 
+                      className='mt-4'> 
                         <span
-                         className="rounded-full px-3 font-medium py-1 text-white text-sm bg-green-600 cursor-pointer"
-                         onClick={ () => approveProject(item.projectId) }> Approve Project </span>
+                         className="rounded-full px-4 font-medium py-2 text-white text-sm bg-green-600 cursor-pointer"
+                         onClick={ () => donateEther(item.projectId) }> Donate Ether </span>
                       </div>
                     </div>
                 </div>

@@ -9,6 +9,11 @@
   height: 100%;
 }
 
+.cardBg {
+  /* background-color: rgba(236, 254, 255, 0.26); */
+  background-color: red;
+}
+
 ::-webkit-scrollbar {
   /* border: 1px solid gray; */
   width: 6px;
@@ -49,16 +54,24 @@ code {
   text-align: center;
 }
 
-.letsStart, .card {
-  /* transition-duration: 0.4s; */
+/* .letsStart, .card {
   background-color: #e3edf7;
-  box-shadow: 6px 6px 10px -1px rgba(0,0,0,0.15),
-              -6px -6px 10px -1px rgba(255,255,255,0.7);
+  box-shadow: 4px 4px 5px -1px rgba(0,0,0,0.15),
+              -4px -4px 5px -1px rgba(255,255,255,0.7);
+  border: 1px solid rgba(0, 0, 0, 0, 0); 
+  transition: transform 0.5s;
+} 
+*/
+
+.letsStart, .card {
+  background-color: #e3edf7;
+  box-shadow: 4px 4px 5px -1px rgba(0,0,0,0.15),
+              -4px -4px 5px -1px rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(0, 0, 0, 0, 0); 
   transition: transform 0.5s;
 }
 
-.letsStart:hover, .card:hover {
+.letsStart:hover { /* .card:hover */
   box-shadow: inset 4px 4px 6px -1px rgba(0,0,0,0.2),
               inset -4px -4px 6px -1px rgba(255,255,255,0.7),
               -0.5px -0.5px 0px rgba(255,255,255,1),
@@ -69,9 +82,15 @@ code {
   /* cursor: pointer; */
 }
 
+.loginBtn:hover {
+  background-color: #ff8000;
+  transition: 0.5s ease-out;
+}
+
 .loginBtn {
-  background-color: #e3edf7;
-  transition: 0.5s ease-in-out;
+  background-color: #ff9933;
+  transition: 0.5s ease-in;
+  color: white;
 }
 
 .transparent {

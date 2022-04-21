@@ -1,19 +1,16 @@
 import React from 'react';
-import DonorSecondCard from './Inside Components/DonorSecondCard';
-import ChartOne from './Inside Components/ChartOne';
+import AdminFirstCard from './Inside Components/AdminFirstCard';
 import { useEffect,useState } from 'react';
 import Loader from '../Layout Pages/Loader';
 import Message from '../Actor pages/Inside Components/Message';
+import LeftPart from './Inside Components/LeftPart';
+import RightPart from './Inside Components/RightPart';
 
 function AdminPage( {my_account, actor, deployed_contract} ) {
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const[size, setSize] = useState(-1);
-
-  const adminName = "CharityChain - Admin";
-  const adminEmail = "admin@charitychain.in";
-  const adminAddresss = my_account;
 
   useEffect(() => {
     if(size === 0) {
@@ -35,7 +32,7 @@ function AdminPage( {my_account, actor, deployed_contract} ) {
       }
       if(size > 0) {
         let obj = await deployed_contract.methods.charityProjects(size).call();
-        setData([...data, obj]);
+        if(size != 1) setData([...data, obj]);  //size = 1 project is dummy created by contract.
         setSize(size-1);
       }
     }
@@ -45,55 +42,30 @@ function AdminPage( {my_account, actor, deployed_contract} ) {
     <div className='w-full flex justify-center mt-6'> 
       <Loader />
     </div> 
-    );
+  );
+
+    const chartData = {
+      allProjects: 0,
+      approvedProjects: 0,
+      completedProjects: 0,
+      myProjects: 0
+    }
+  
+    data.map((it) => {
+      chartData.allProjects++;
+      if(it.isApproved) chartData.approvedProjects++;
+      if(it.isCompleted) chartData.completedProjects++;
+      if(it.createrAddress === my_account) chartData.myProjects++;
+    })
 
   return ( 
     <>
-      <div className="mx-auto w-3/4 p-4 mb-16">
+      <div className="mx-auto mt-8 w-3/4 p-4 mb-16">
         {/* Profile Section */}
         <div className="flex flex-row">
-          {/* Left Part */}
-          <div className="w-1/3 card rounded-xl p-2 pb-4 m-2">
-            <h1 className="text-md mt-1 font-medium drop-shadow-xl text-orange-600">MY PROFILE</h1>
-            <div className="p-2">
-              <h1 className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-2"> Name </h1>
-              <h1 className="drop-shadow-xl  font-medium text-black"> {adminName} </h1>
-              <h1 className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4"> Email Id </h1>
-              <h1 className="drop-shadow-xl  font-medium text-black"> {adminEmail} </h1>
-              <h1 className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4">
-                 <span className='drop-shadow-xl  font-medium text-orange-600'> {actor} </span> Address
-              </h1>
-              <div className="drop-shadow-xl font-medium font-medium text-black"> {adminAddresss.substr(0, adminAddresss.length-4)} ... </div>
-              {/* <p> {adminAddresss} </p> */}
-            </div>
-          </div>
-
-        {/* Right Part */}
-          <div className="w-1/3 grow card rounded-xl p-2 m-2">
-            <h1 className="text-md mt-1 font-medium drop-shadow-xl text-orange-600">OVERALL</h1>
-            <div className="flex flex-row ">
-              <div className="w-2/5 mr-4 border-r-2 cursor-pointer  border-purple-300">
-                <ChartOne  />
-              </div>
-
-              <div className="w-2/5 grow text-center">
-                <div className="">
-                  <span className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-2"> All Projects </span>
-                  <span className="drop-shadow-xl text-2xl ml-4 font-medium text-black"> 452 </span> <br />
-                  <span className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4"> Approved Projects </span>
-                  <span className="drop-shadow-xl text-2xl ml-4 font-medium text-black"> 256 </span> <br />
-                  <span className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4"> Completed Projects </span>
-                  <span className="drop-shadow-xl text-2xl ml-4 font-medium text-black"> 65 </span> <br />
-                  <span className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4"> Approved Projects </span>
-                  <span className="drop-shadow-xl text-2xl ml-4 font-medium text-black"> 256 </span> <br />
-                  <span className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4"> Approved Projects </span>
-                  <span className="drop-shadow-xl text-2xl ml-4 font-medium text-black"> 256 </span> <br />
-                </div>
-              </div>
-            </div>
-          </div>
+          <LeftPart actor={actor} my_account={my_account} />
+          <RightPart chartData={chartData} />
         </div>
-      
 
         {/* All Projets */}
 
@@ -103,7 +75,7 @@ function AdminPage( {my_account, actor, deployed_contract} ) {
           {
             data.length === 0 ? 
             <Message /> : 
-            data.map((it) => <DonorSecondCard key={it.projectId} item={it} deployed_contract={deployed_contract} my_account={my_account} />)
+            data.map((it) => <AdminFirstCard key={it.projectId} item={it} deployed_contract={deployed_contract} my_account={my_account} />)
           }
           </div>
         </div>

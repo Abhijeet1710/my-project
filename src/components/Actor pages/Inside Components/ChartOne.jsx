@@ -2,9 +2,19 @@ import React, {Component, useState} from 'react';
 import ApexCharts from 'apexcharts';
 import Chart from 'react-apexcharts';
 
-const ChartOne = () => {
+const ChartOne = ( {chartData} ) => {
 
-    const [series, setSeries] = useState([44, 55, 67, 83]);
+  let allProjects = chartData.allProjects;
+  let approvedProjects = chartData.approvedProjects;
+  let completedProjects = chartData.completedProjects;
+  let myProjects = chartData.myProjects;
+  
+  const [series, setSeries] = useState([
+    (allProjects / allProjects) * 100,
+    (approvedProjects / allProjects) * 100,
+    (completedProjects / allProjects) * 100,
+    (myProjects / allProjects) * 100
+  ]);
 
     const [options, setOptions] = useState({
         chart: {
@@ -24,13 +34,13 @@ const ChartOne = () => {
                   show: true,
                   label: 'Total',
                   formatter: function (w) {
-                    return 249
+                    return allProjects;
                   }
                 }
               }
             }
         },
-        labels: ['Apples', 'Oranges', 'Bananas', 'Berries'],
+        labels: ['Total', 'Approved', 'Completed', 'Participated'],
     });
 
 

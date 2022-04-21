@@ -1,57 +1,74 @@
 import React from 'react'
 import DonorFirstCard from './Inside Components/DonorFirstCard';
-import Footer from '../Actor pages/Inside Components/Footer';
+import { useEffect,useState } from 'react';
 import DonorSecondCard from './Inside Components/DonorSecondCard';
-import ChartOne from './Inside Components/ChartOne';
+import Message from './Inside Components/Message';
+import Loader from "../Layout Pages/Loader";
+import LeftPart from './Inside Components/LeftPart';
+import RightPart from './Inside Components/RightPart';
 
-function DonorPage( {actor, data} ) {
+function DonorPage( {actor, my_account, deployed_contract} ) {
 
-  const numbers = [1, 2, 3, 4, 5,6,7,8,9,14];
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  const[size, setSize] = useState(-1);
+
+  useEffect(() => {
+    if(size === 0) {
+      setLoading(false);
+      return;
+    } 
+
+    loadData();
+
+    async function loadData() {
+      if(size === 0) {
+        setLoading(false);
+        return;
+      } 
+
+      if(size === -1) {
+        let n = await deployed_contract.methods.totalProjects().call();
+        setSize(n);
+      }
+
+      if(size > 0) {
+        let obj = await deployed_contract.methods.charityProjects(size).call();
+        if(size != 1) setData([...data, obj]);
+        setSize(size-1);
+      }
+    }
+  }, [size]); 
+
+  
+  if(loading) 
+  return (
+    <div className='w-full flex justify-center mt-6'> 
+      <Loader />
+    </div> 
+  );
+
+  const chartData = {
+    allProjects: 0,
+    approvedProjects: 0,
+    completedProjects: 0,
+    myProjects: 0
+  }
+
+  data.map((it) => {
+    chartData.allProjects++;
+    if(it.isApproved) chartData.approvedProjects++;
+    if(it.isCompleted) chartData.completedProjects++;
+    if(it.createrAddress === my_account) chartData.myProjects++;
+  })
 
   return ( 
     <>
-      <div className="mx-auto w-3/4 p-4 mb-16">
+      <div className="mx-auto mt-8 w-3/4 p-4 mb-16">
         {/* Profile Section */}
         <div className="flex flex-row">
-          {/* Left Part */}
-          <div className="w-1/3 card rounded-xl p-2 pb-4 m-2">
-            <h1 className="text-md mt-1 font-medium drop-shadow-xl text-orange-600">MY PROFILE</h1>
-            <div className="p-2">
-              <h1 className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-2"> Name </h1>
-              <h1 className="drop-shadow-xl  font-medium text-black"> {data.donorName} </h1>
-              <h1 className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4"> Email Id </h1>
-              <h1 className="drop-shadow-xl  font-medium text-black"> { data.donorEmail } </h1>
-              <h1 className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4">
-                 <span className='drop-shadow-xl  font-medium text-orange-600'> {actor} </span> Address
-              </h1>
-              <h1 className="drop-shadow-xl font-medium font-medium text-black"> {data.donorAddress} </h1>
-            </div>
-          </div>
-
-        {/* Right Part */}
-          <div className="w-1/3 grow card rounded-xl p-2 m-2">
-            <h1 className="text-md mt-1 font-medium drop-shadow-xl text-orange-600">OVERALL</h1>
-            <div className="flex flex-row ">
-              <div className="w-2/5 mr-4 border-r-2 cursor-pointer  border-purple-300">
-                <ChartOne  />
-              </div>
-
-              <div className="w-2/5 grow text-center">
-                <div className="">
-                  <span className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-2"> All Projects </span>
-                  <span className="drop-shadow-xl text-2xl ml-4 font-medium text-black"> 452 </span> <br />
-                  <span className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4"> Approved Projects </span>
-                  <span className="drop-shadow-xl text-2xl ml-4 font-medium text-black"> 256 </span> <br />
-                  <span className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4"> Completed Projects </span>
-                  <span className="drop-shadow-xl text-2xl ml-4 font-medium text-black"> 65 </span> <br />
-                  <span className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4"> Approved Projects </span>
-                  <span className="drop-shadow-xl text-2xl ml-4 font-medium text-black"> 256 </span> <br />
-                  <span className="drop-shadow-xl text-xs font-medium text-neutral-400 mt-4"> Approved Projects </span>
-                  <span className="drop-shadow-xl text-2xl ml-4 font-medium text-black"> 256 </span> <br />
-                </div>
-              </div>
-            </div>
-          </div>
+          <LeftPart actor={actor} my_account={my_account} />
+          <RightPart chartData={chartData} />
         </div>
       
 
@@ -62,11 +79,11 @@ function DonorPage( {actor, data} ) {
           
           <div className="px-4">
             
-            {
-              numbers.map((item, index) => {
-                return <DonorSecondCard i={index} />;
-              })
-            }
+          {
+            data.length === 0 ? 
+            <Message /> : 
+            data.map((it) => <DonorFirstCard key={it.projectId} item={it} deployed_contract={deployed_contract} my_account={my_account} />)
+          }
 
           </div>
         </div>
@@ -78,14 +95,12 @@ function DonorPage( {actor, data} ) {
         <div className="mt-4 card p-4 rounded-lg">
           <h1 className="text-lg mt-1 mb-8 font-medium drop-shadow-xl text-orange-600">Approved Projects & Amount Required</h1>
           
-          <div className="px-4">
-            <DonorSecondCard /> 
-            <DonorSecondCard /> 
-            <DonorSecondCard /> 
-            <DonorSecondCard /> 
-            <DonorSecondCard /> 
-            <DonorSecondCard /> 
-          </div>
+          {
+            data.length === 0 ? 
+            <Message /> : 
+            data.map((it) => <DonorSecondCard key={it.projectId} item={it} deployed_contract={deployed_contract} my_account={my_account} />)
+          }
+
         </div>
 
       </div>
