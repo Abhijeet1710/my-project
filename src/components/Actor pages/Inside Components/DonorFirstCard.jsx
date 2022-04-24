@@ -14,12 +14,12 @@ function DonorFirstCard( {item, deployed_contract, my_account} ) {
                 <h1 className="drop-shadow-xl  font-medium text-black"> {item.projectName} </h1>
 
                 <div className="flex flex-row">
-                    <span
-                      className="mr-2 rounded-full px-3 font-medium py-1 text-white text-sm bg-green-600">
-                         Approved
+                  <span
+                      className={`mr-2 rounded-full  px-2 font-medium text-gray-500 text-sm bg-green-600 ${item.isApproved ? ' bg-green-300' : ' bg-red-200'}`}>
+                         {item.isApproved ? "Approved" : "Not Approved"}
                     </span>
 
-                    <span className="mr-4 rounded-full px-3 font-medium py-1 text-white text-sm bg-red-500">
+                    <span className="mr-2 rounded-full  px-2 font-medium text-gray-500 text-sm bg-cyan-200">
                        {item.amountGot} Eth 
                     </span>
 

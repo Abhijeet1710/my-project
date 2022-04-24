@@ -6,6 +6,7 @@ import Loader from '../Layout Pages/Loader';
 import LeftPart from './Inside Components/LeftPart';
 import RightPart from './Inside Components/RightPart';
 import FormDialog from './Inside Components/FormDialog';
+import Navbar2 from '../Layout Pages/Navbar2';
 
 function BenifactorPage( {my_account, actor, deployed_contract} ) {
  
@@ -54,9 +55,13 @@ function BenifactorPage( {my_account, actor, deployed_contract} ) {
 
   if(loading) 
   return (
+    <>
+    <Navbar2 my_account={my_account} actor={actor} />
+    
     <div className=''> 
       <Loader />
     </div> 
+    </>
   );
 
   const chartData = {
@@ -79,6 +84,7 @@ function BenifactorPage( {my_account, actor, deployed_contract} ) {
 
   return ( 
     <>
+    <Navbar2 my_account={my_account} actor={actor} />
       <div className="mx-auto w-3/4 mt-8 p-4 mb-16">
         {/* Profile Section */}
         <div className="flex flex-row">

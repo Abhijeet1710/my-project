@@ -25,13 +25,13 @@ function App() {
   
       const accounts = await web3.eth.getAccounts();
       setAccount(accounts[0]);
-  
+
       if (accounts.length === 0) {
         return;
       }
       const networkId = await web3.eth.net.getId();
       let deployedNetwork = Helloabi.networks[networkId];
-      
+
       try {
         const ContractInstance = new web3.eth.Contract(
           Helloabi.abi,
@@ -54,7 +54,7 @@ function App() {
 
   return (
     <div className="overflow-x-hidden main-page">
-        <Navbar2 my_account={account} />
+        {/* <Navbar2 my_account={account} /> */}
         <StartPage my_account={account} deployed_contract={deployedContract} />
         <Footer />
       </div>

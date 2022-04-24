@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHandHoldingDollar, faCircleDollarToSlot, faUserGear, faUserLarge, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {CgSpinner} from 'react-icons/cg';
 import Loader from './Loader';
+import Navbar2 from './Navbar2';
 
 function LoginPage( {setLogin, my_account, deployed_contract} ) {
   AOS.init();
@@ -137,13 +138,18 @@ function LoginPage( {setLogin, my_account, deployed_contract} ) {
 
   if(my_account.length === 0) { 
     return ( 
+      <>
+      <Navbar2 my_account={my_account} />
       <div className=''>
         <Loader /> 
       </div>
+      </>
     )
   };
 
   return (
+    <>
+    <Navbar2 my_account={my_account} />
     <div className="mt-16">
       
       <div className="w-4/5 overflow-hidden card lg:w-3/12 pt-2 pb-8 px-6 mt-6 mx-auto h-200px rounded-xl"
@@ -174,15 +180,12 @@ function LoginPage( {setLogin, my_account, deployed_contract} ) {
               <input id="ipEmail" className="drop-shadow-xl w-full bg-transparent outline-none font-medium"/>
             </div>
           </div>
-
           
           <h2 className=" grow-0 text-sm drop-shadow-xl mt-8 font-medium text-black-600">Your Address </h2>
           <label className="drop-shadow-xl text-xs font-medium text-neutral-400 placeholder"> {my_account} </label>
 
-
           <h2 className=" grow-0 text-sm drop-shadow-xl mt-2 font-medium text-black-600">Log in As </h2>
             
-
           <div className="flex flex-row justify-between mx-12 mt-4">
 
             <div className="flex flex-col justify-center text-center">
@@ -218,7 +221,7 @@ function LoginPage( {setLogin, my_account, deployed_contract} ) {
           {/* Login SignUp Button  */}
           <div 
             onClick={btnClicked}
-            className='loginBtn cursor-pointer text-white flex justify-center py-2 my-2 drop-shadow-lg w-full text-md font-medium border rounded-3xl mt-4 border-orange-500'>
+            className='loginBtn cursor-pointer text-white flex justify-center py-2 my-2 drop-shadow-lg w-full text-md font-medium rounded-3xl mt-4'>
               <CgSpinner className={`animate-spin my-1 ${loading ? "block" : "hidden"}`} />
               <span className='ml-2'> 
                     { loginState ? LOG_IN : SIGN_UP }
@@ -238,6 +241,7 @@ function LoginPage( {setLogin, my_account, deployed_contract} ) {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

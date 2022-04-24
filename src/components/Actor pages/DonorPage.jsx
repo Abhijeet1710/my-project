@@ -6,12 +6,15 @@ import Message from './Inside Components/Message';
 import Loader from "../Layout Pages/Loader";
 import LeftPart from './Inside Components/LeftPart';
 import RightPart from './Inside Components/RightPart';
+import Navbar2 from '../Layout Pages/Navbar2';
+import web3 from 'web3';
 
 function DonorPage( {actor, my_account, deployed_contract} ) {
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const[size, setSize] = useState(-1);
+  let len;
 
   useEffect(() => {
     if(size === 0) {
@@ -28,8 +31,10 @@ function DonorPage( {actor, my_account, deployed_contract} ) {
       } 
 
       if(size === -1) {
+
         let n = await deployed_contract.methods.totalProjects().call();
         setSize(n);
+        len = n;
       }
 
       if(size > 0) {
@@ -40,12 +45,39 @@ function DonorPage( {actor, my_account, deployed_contract} ) {
     }
   }, [size]); 
 
+  async function donate(id, eth) {
+
+    let ind;
+
+    for(let i=0; i<data.length; i++) if(id === data[i].projectId) {
+      ind = i;
+      break;
+    }
+
+    if(eth+data[ind].amountGot > data[ind].amountRequire) {
+      alert('Please donate inBound');
+      return;
+    }
+
+    await deployed_contract.methods.donateEther(data[ind].createrAddress, ind).send({ from: my_account, value: 1000000000000000000 * eth  })
+    .once('receipt', (receipt) => {
+      // setApproved(true);
+      // alert("Succes");
+        setData([]);
+        setSize(-1);
+
+    });
+  }
+
   
   if(loading) 
   return (
+    <>
+    <Navbar2 my_account={my_account} actor={actor} />
     <div className='w-full flex justify-center mt-6'> 
       <Loader />
     </div> 
+    </>
   );
 
   const chartData = {
@@ -60,10 +92,14 @@ function DonorPage( {actor, my_account, deployed_contract} ) {
     if(it.isApproved) chartData.approvedProjects++;
     if(it.isCompleted) chartData.completedProjects++;
     if(it.createrAddress === my_account) chartData.myProjects++;
-  })
+  });
+
+  const approved = data.filter((it) => it.isApproved);
 
   return ( 
     <>
+      <Navbar2 my_account={my_account} actor={actor} />
+
       <div className="mx-auto mt-8 w-3/4 p-4 mb-16">
         {/* Profile Section */}
         <div className="flex flex-row">
@@ -73,20 +109,7 @@ function DonorPage( {actor, my_account, deployed_contract} ) {
       
 
         {/* Participated Projets */}
-
-        <div className="mt-12 card px-4 py-8 rounded-lg">
-          <h1 className="text-lg mt-1 mb-8 font-medium drop-shadow-xl text-orange-600">Participated Projects & Amount Donated</h1>
-          
-          <div className="px-4">
-            
-          {
-            data.length === 0 ? 
-            <Message /> : 
-            data.map((it) => <DonorFirstCard key={it.projectId} item={it} deployed_contract={deployed_contract} my_account={my_account} />)
-          }
-
-          </div>
-        </div>
+        
 
         <div className="mt-12 w-full h-0.5 "></div>
 
@@ -96,9 +119,11 @@ function DonorPage( {actor, my_account, deployed_contract} ) {
           <h1 className="text-lg mt-1 mb-8 font-medium drop-shadow-xl text-orange-600">Approved Projects & Amount Required</h1>
           
           {
-            data.length === 0 ? 
+            approved.length === 0 ? 
             <Message /> : 
-            data.map((it) => <DonorSecondCard key={it.projectId} item={it} deployed_contract={deployed_contract} my_account={my_account} />)
+            approved.map((it, ind) => {
+              return <DonorSecondCard key={it.projectId} donate={donate} item={it} deployed_contract={deployed_contract} my_account={my_account} />
+            } )
           }
 
         </div>
@@ -110,3 +135,17 @@ function DonorPage( {actor, my_account, deployed_contract} ) {
 }
 
 export default DonorPage;
+
+/*
+TITLE   PID
+p1      2     3
+p2      3     2
+p3      4     1
+p4      5     0
+
+len = 5
+
+len - PID - 1
+5 - 5
+
+*/

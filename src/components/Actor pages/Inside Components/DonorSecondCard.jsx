@@ -3,14 +3,25 @@ import { Disclosure } from '@headlessui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons"
 
-function DonorSecondCard( {item, deployed_contract, my_account} ) {
+function DonorSecondCard( {item, deployed_contract, my_account, key, donate} ) {
 
   async function donateEther(id) {
+
+    let eth = document.getElementById('ethers').value;
+    if(eth === "") alert("Please fill value");
+    else await donate(item.projectId, parseInt(eth));
     
-    // await deployed_contract.methods.approvProject(id).send({ from: my_account })
-    //   .once('receipt', (receipt) => {
-    //     setApproved(true);
-    // });
+
+    // item => 
+
+    //         projectId: id,
+    //         projectName : charityProjects[id].projectName,
+    //         createrAddress : charityProjects[id].createrAddress,
+    //         projectDescription : charityProjects[id].projectDescription,
+    //         amountRequire : charityProjects[id].amountRequire,
+    //         isCompleted: charityProjects[id].isCompleted,
+    //         amountGot: charityProjects[id].amountGot,
+    //         isApproved: true
     
   }
 
@@ -23,13 +34,17 @@ function DonorSecondCard( {item, deployed_contract, my_account} ) {
                 <h1 className="drop-shadow-xl  font-medium text-black"> {item.projectName} </h1>
 
                 <div className="flex flex-row">
-                    <span
-                      className="mr-2 rounded-full px-3 font-medium py-1 text-white text-sm bg-green-600">
-                         Approved
+                  <span
+                      className={`mr-2 rounded-full  px-2 font-medium text-gray-500 text-sm bg-green-600 ${item.isCompleted ? ' bg-green-300' : ' bg-red-200'}`}>
+                         {item.isCompleted ? "Completed" : "Not Complete"}
+                    </span>
+                  <span
+                      className={`mr-2 rounded-full  px-2 font-medium text-gray-500 text-sm bg-green-600 ${item.isApproved ? ' bg-green-300' : ' bg-red-200'}`}>
+                         {item.isApproved ? "Approved" : "Not Approved"}
                     </span>
 
-                    <span className="mr-4 rounded-full px-3 font-medium py-1 text-white text-sm bg-red-500">
-                       {item.amountGot} Eth 
+                    <span className="mr-2 rounded-full  px-2 font-medium text-gray-500 text-sm bg-cyan-200">
+                       {item.amountRequire} Eth 
                     </span>
 
                     <FontAwesomeIcon className={`${
@@ -43,20 +58,26 @@ function DonorSecondCard( {item, deployed_contract, my_account} ) {
                     <h1 className="mr-6 text-xs font-medium text-neutral-400 mt-2">
                        {item.projectDescription} 
                     </h1>
-                    <div className='mt-4'>
-                      <div>
-                        <span className="drop-shadow-xl font-medium text-black"> Amount Required  : </span>
-                        <span className="drop-shadow-xl text-xl font-medium text-black"> {item.amountRequire} </span>
+                    <div className='flex justify-between mt-4'>
+                      <div className=''>
+                        <div>
+                          <span className="drop-shadow-xl font-medium text-black"> Amount Required  : </span>
+                          <span className="drop-shadow-xl text-xl font-medium text-black"> {item.amountRequire} </span>
+                        </div>
+                        <div>
+                          <span className="drop-shadow-xl font-medium text-black"> Amount Received  : </span>
+                          <span className="drop-shadow-xl text-xl font-medium text-black"> {item.amountGot} </span>
+                        </div>
                       </div>
-                      <div>
-                        <span className="drop-shadow-xl font-medium text-black"> Amount Received  : </span>
-                        <span className="drop-shadow-xl text-xl font-medium text-black"> {item.amountGot} </span>
-                      </div>
-                      <div 
-                      className='mt-4'> 
-                        <span
-                         className="rounded-full px-4 font-medium py-2 text-white text-sm bg-green-600 cursor-pointer"
-                         onClick={ () => donateEther(item.projectId) }> Donate Ether </span>
+                      <div className={`mt-4 ${item.isCompleted ? 'hidden' : 'block'}`}> 
+                        <span> 
+                         <input className='transparent border-b border-orange-400' type="numder" id="ethers" placeholder="Amount in Eth" />
+                         <button
+                          className="rounded-full px-4 font-medium py-2 text-white text-sm bg-green-500 cursor-pointer hover:bg-green-600" 
+                          onClick={ () => donateEther() }> 
+                            Donate 
+                         </button>
+                        </span>
                       </div>
                     </div>
                 </div>

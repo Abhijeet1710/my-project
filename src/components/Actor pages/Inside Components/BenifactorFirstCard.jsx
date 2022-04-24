@@ -16,17 +16,17 @@ function BenifactorFirstCard( {item, deployed_contract, my_account} ) {
 
                 <div className="flex flex-row">
                     <span
-                      className="mr-2 rounded-full px-3 font-medium py-1 text-gray-500 text-sm bg-cyan-200">
-                         Approved
+                      className={ `mr-2 rounded-full px-2 font-medium text-gray-500 text-sm ${item.isApproved ? ' bg-green-300' : ' bg-red-200'}`}>
+                         {item.isApproved ? "Approved" : "Not Approved"}
                     </span>
 
-                    <span className="mr-4 rounded-full px-3 font-medium py-1 text-gray-500 text-sm bg-red-300">
+                    <span className="mr-2 rounded-full px-2 font-medium text-gray-500 text-sm  bg-cyan-200">
                        {item.amountGot} Eth 
                     </span>
 
                     <FontAwesomeIcon className={`${
                         open ? 'transform rotate-180' : ''
-                    } w-5 h-5 text-purple-500`} icon={faAngleDown} />
+                    } w-5 h-5 text-purple-500 mt-1`} icon={faAngleDown} />
                 </div>
               </Disclosure.Button>
 

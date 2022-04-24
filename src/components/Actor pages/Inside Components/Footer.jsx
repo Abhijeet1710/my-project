@@ -16,7 +16,7 @@ function Footer() {
             </div>
             <div className="flex align-middle">
               <span> Made with ❤️ by Prathamesh & Abhijeet </span>
-              <span className="ml-2 font-bold"> Ind </span>
+              <span className="ml-4 font-bold"> Ind </span>
               <span className="ml-1">
                  <img width="22px" height="22px" src="https://img.icons8.com/fluency/96/000000/india-circular.png"/>
               </span>

@@ -27,7 +27,7 @@ function StartPage( {my_account, deployed_contract} ) {
     );
   } else if(login === 2) {
     return (
-      <DonorPage actor={"Benifactor"} my_account={my_account} deployed_contract={deployed_contract} />
+      <DonorPage actor={"Donor"} my_account={my_account} deployed_contract={deployed_contract} />
     );
   } else if(login === 3) {
     return (
