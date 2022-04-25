@@ -1,22 +1,25 @@
 import React from "react";
 import Card from "../Actor pages/Inside Components/CardPage";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons"
 import Navbar from "../Layout Pages/Navbar";
+import { useNavigate } from "react-router-dom";
 
 function LearnPage( {setLogin, login } ) {
   // 1 -> Admin Page
   // 2 -> Donor Page
   // 3 -> Benifactor Page
 
+  let navigate = useNavigate();
+
   const letsStartBtnClicked = () => {
     localStorage.setItem("newUser", false);
-    // console.log(localStorage.getItem("newUser"));
-    (login !== 0) ? setLogin(0) : setLogin(-1);
+
+    navigate("/");
+
   }
 
   return (
     <>
+    <Navbar />
     <div className="mx-auto w-3/4 h-full pb-12">
         <Card data-aos="fade-up" title="What is CharityChain ?"
               description="Benefactors don’t have trust about how donated

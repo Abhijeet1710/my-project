@@ -7,6 +7,7 @@ import LoginPage from "../Layout Pages/LoginPage";
 
 function StartPage( {my_account, deployed_contract} ) {
   const[login, setLogin] = useState(-1);
+  const[userData, setUserData] = useState({});
 
   const firstTime = (localStorage.getItem("newUser") != null) ? localStorage.getItem("newUser") : true;
 
@@ -23,20 +24,20 @@ function StartPage( {my_account, deployed_contract} ) {
   
   else if(login === 1) {
     return (
-      <AdminPage actor={"Admin"} my_account={my_account} deployed_contract={deployed_contract}  />
+      <AdminPage userData={userData} actor={"Admin"} my_account={my_account} deployed_contract={deployed_contract}  />
     );
   } else if(login === 2) {
     return (
-      <DonorPage actor={"Donor"} my_account={my_account} deployed_contract={deployed_contract} />
+      <DonorPage userData={userData} actor={"Donor"} my_account={my_account} deployed_contract={deployed_contract} />
     );
   } else if(login === 3) {
     return (
-      <BenifactorPage actor={"Benifactor"} my_account={my_account} deployed_contract={deployed_contract}  />
+      <BenifactorPage userData={userData} actor={"Benifactor"} my_account={my_account} deployed_contract={deployed_contract}  />
     );
   } 
   
   return (
-    <LoginPage setLogin={setLogin} my_account={my_account} deployed_contract={deployed_contract}  />
+    <LoginPage setUserData={setUserData} setLogin={setLogin} my_account={my_account} deployed_contract={deployed_contract}  />
   );
 }
 

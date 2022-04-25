@@ -6,8 +6,9 @@ import Message from '../Actor pages/Inside Components/Message';
 import LeftPart from './Inside Components/LeftPart';
 import RightPart from './Inside Components/RightPart';
 import Navbar2 from '../Layout Pages/Navbar2';
+import CompletedCard from './Inside Components/CompletedCard';
 
-function AdminPage( {my_account, actor, deployed_contract} ) {
+function AdminPage( {userData, my_account, actor, deployed_contract} ) {
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -62,6 +63,9 @@ function AdminPage( {my_account, actor, deployed_contract} ) {
       if(it.createrAddress === my_account) chartData.myProjects++;
     })
 
+    const other = data.filter((it) => !it.isCompleted);
+    const completed = data.filter((it) => it.isCompleted);
+
   return ( 
     <>
       <Navbar2 my_account={my_account} actor={actor} />
@@ -69,21 +73,36 @@ function AdminPage( {my_account, actor, deployed_contract} ) {
       <div className="mx-auto mt-8 w-3/4 p-4 mb-16">
         {/* Profile Section */}
         <div className="flex flex-row">
-          <LeftPart actor={actor} my_account={my_account} />
+          <LeftPart userData={userData} actor={actor} my_account={my_account} />
           <RightPart chartData={chartData} />
         </div>
 
         {/* All Projets */}
 
-        <div className="mt-12 mb-8 card px-4 py-8 rounded-lg">
+        <div className="my-12 card px-4 py-8 rounded-lg">
           <h1 className="text-lg mt-1 mb-8 font-medium drop-shadow-xl text-orange-600"> All Projects </h1>
           <div className="px-4"> 
           {
-            data.length === 0 ? 
+            other.length === 0 ? 
             <Message /> : 
-            data.map((it) => <AdminFirstCard key={it.projectId} item={it} deployed_contract={deployed_contract} my_account={my_account} />)
+            other.map((it) => <AdminFirstCard key={it.projectId} item={it} deployed_contract={deployed_contract} my_account={my_account} />)
           }
           </div>
+        </div>
+
+        {/* Completed Projets */}
+
+        <div className="card p-4 rounded-lg mb-8" >
+          <h1 className="text-lg mt-1 mb-8 font-medium drop-shadow-xl text-orange-600"> Completed Projects</h1>
+          
+          {
+            completed.length === 0 ? 
+            <Message /> : 
+            completed.map((it, ind) => {
+              return <CompletedCard key={it.projectId} item={it} />
+            } )
+          }
+
         </div>
 
       </div>

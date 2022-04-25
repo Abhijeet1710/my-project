@@ -1,5 +1,6 @@
 import React from "react";
 import Tooltip from '@mui/material/Tooltip';
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -11,7 +12,7 @@ function Footer() {
               <p> Copyright © 2022 </p> 
               <p> CharityChain </p>
               <Tooltip title="Learn more about CharityChain" arrow>
-                 <p className="ml-4 cursor-pointer	text-slate-500	hover:text-slate-800	"> Learn More </p>
+                 <Link to="/Learn-More"> <p className="ml-4 cursor-pointer	text-slate-500	hover:text-slate-800	"> Learn More </p> </Link>
                </Tooltip>
             </div>
             <div className="flex align-middle">

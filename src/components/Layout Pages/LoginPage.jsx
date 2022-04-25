@@ -7,7 +7,7 @@ import {CgSpinner} from 'react-icons/cg';
 import Loader from './Loader';
 import Navbar2 from './Navbar2';
 
-function LoginPage( {setLogin, my_account, deployed_contract} ) {
+function LoginPage( {setLogin, my_account, deployed_contract, setUserData} ) {
   AOS.init();
 
   const LOG_IN = "LOG_IN";
@@ -37,7 +37,8 @@ function LoginPage( {setLogin, my_account, deployed_contract} ) {
       case 1: {
         let admin = await deployed_contract.methods.getAdmin().call();
 
-        if(admin === my_account) {
+        if(admin === my_account && ipName === "admin" && ipEmail === "admin@charitychain.in") {
+          setUserData({name: "admin", email: "admin@charitychain.in"});
           setLoading(false);
           setLogin(1);
         }
@@ -56,7 +57,11 @@ function LoginPage( {setLogin, my_account, deployed_contract} ) {
           setLoading(false);
           alert("Account not found !");
         } 
-        else{
+        else if(onr.donorName !== ipName || onr.donorEmail !== ipEmail) {
+          setLoading(false);
+          alert("Wrong Username or email!");
+        } else{
+          setUserData({name: onr.donorName, email: onr.donorEmail});
           setLoading(false);
           setLogin(2);
         } 
@@ -71,7 +76,12 @@ function LoginPage( {setLogin, my_account, deployed_contract} ) {
           setLoading(false);
           alert("Account not found !");
         } 
+        else if(onr.benifactorName !== ipName || onr.benifactorEmail !== ipEmail) {
+          setLoading(false);
+          alert("Wrong Username or email!");
+        }
         else {
+          setUserData({name: onr.benifactorName, email: onr.benifactorEmail});
           setLoading(false);
           setLogin(3);
         } 
@@ -83,21 +93,20 @@ function LoginPage( {setLogin, my_account, deployed_contract} ) {
   }
 
   async function signup(ipName, ipEmail){
-
+    setLoading(false);
+    
     switch(active) {
       case 2: {
         await deployed_contract.methods.addNewDonor(ipName, ipEmail).send({from: my_account})
         .once('receipt', (receipt) => {
-
-          if(receipt.events.returnMessage.returnValues.status) {
-            alert("Account Created Succesfully You can Login Now");
-            setLoading(false);
-            setLoginState(!loginState);
-          }
-          else {
-            setLoading(false);
-            alert(receipt.events.returnMessage.returnValues.message);
-          } 
+          alert("You can Log in now");
+          // if(receipt.events.returnMessage.returnValues.status) {
+          //   alert("Account Created Succesfully You can Login Now");
+          //   setLoginState(!loginState);
+          // }
+          // else {
+          //   alert(receipt.events.returnMessage.returnValues.message);
+          // } 
 
         });
 
@@ -107,16 +116,16 @@ function LoginPage( {setLogin, my_account, deployed_contract} ) {
       case 3: {
         await deployed_contract.methods.addNewBenifactor(ipName, ipEmail).send({ from: my_account })
         .once('receipt', (receipt) => {
-
-          if(receipt.events.returnMessage.returnValues.status) {
-            alert("Account Created Succesfully You can Login Now");
-            setLoading(false);
-            setLoginState(!loginState);
-          }
-          else {
-            setLoading(false);
-            alert(receipt.events.returnMessage.returnValues.message);
-          } 
+            alert("You can Log in now");
+          // if(receipt.events.returnMessage.returnValues.status) {
+          //   alert("Account Created Succesfully You can Login Now");
+          //   setLoading(false);
+          //   setLoginState(!loginState);
+          // }
+          // else {
+          //   setLoading(false);
+          //   alert(receipt.events.returnMessage.returnValues.message);
+          // } 
         });
 
         break;

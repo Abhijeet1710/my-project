@@ -9,19 +9,7 @@ function DonorSecondCard( {item, deployed_contract, my_account, key, donate} ) {
 
     let eth = document.getElementById('ethers').value;
     if(eth === "") alert("Please fill value");
-    else await donate(item.projectId, parseInt(eth));
-    
-
-    // item => 
-
-    //         projectId: id,
-    //         projectName : charityProjects[id].projectName,
-    //         createrAddress : charityProjects[id].createrAddress,
-    //         projectDescription : charityProjects[id].projectDescription,
-    //         amountRequire : charityProjects[id].amountRequire,
-    //         isCompleted: charityProjects[id].isCompleted,
-    //         amountGot: charityProjects[id].amountGot,
-    //         isApproved: true
+    else await donate(id, parseInt(eth));
     
   }
 
@@ -43,8 +31,8 @@ function DonorSecondCard( {item, deployed_contract, my_account, key, donate} ) {
                          {item.isApproved ? "Approved" : "Not Approved"}
                     </span>
 
-                    <span className="mr-2 rounded-full  px-2 font-medium text-gray-500 text-sm bg-cyan-200">
-                       {item.amountRequire} Eth 
+                    <span className={` ${item.isCompleted ? 'hidden' : 'block'} mr-2 rounded-full  px-2 font-medium text-gray-500 text-sm bg-cyan-200  `}>
+                       {item.amountRequire - item.amountGot} Eth 
                     </span>
 
                     <FontAwesomeIcon className={`${
@@ -61,7 +49,7 @@ function DonorSecondCard( {item, deployed_contract, my_account, key, donate} ) {
                     <div className='flex justify-between mt-4'>
                       <div className=''>
                         <div>
-                          <span className="drop-shadow-xl font-medium text-black"> Amount Required  : </span>
+                          <span className="drop-shadow-xl font-medium text-black"> Total Amount Required  : </span>
                           <span className="drop-shadow-xl text-xl font-medium text-black"> {item.amountRequire} </span>
                         </div>
                         <div>
@@ -74,7 +62,7 @@ function DonorSecondCard( {item, deployed_contract, my_account, key, donate} ) {
                          <input className='transparent border-b border-orange-400' type="numder" id="ethers" placeholder="Amount in Eth" />
                          <button
                           className="rounded-full px-4 font-medium py-2 text-white text-sm bg-green-500 cursor-pointer hover:bg-green-600" 
-                          onClick={ () => donateEther() }> 
+                          onClick={ () => donateEther(item.projectId) }> 
                             Donate 
                          </button>
                         </span>

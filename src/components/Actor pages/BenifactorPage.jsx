@@ -8,7 +8,7 @@ import RightPart from './Inside Components/RightPart';
 import FormDialog from './Inside Components/FormDialog';
 import Navbar2 from '../Layout Pages/Navbar2';
 
-function BenifactorPage( {my_account, actor, deployed_contract} ) {
+function BenifactorPage( {my_account, actor, deployed_contract, userData} ) {
  
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -88,19 +88,19 @@ function BenifactorPage( {my_account, actor, deployed_contract} ) {
       <div className="mx-auto w-3/4 mt-8 p-4 mb-16">
         {/* Profile Section */}
         <div className="flex flex-row">
-          <LeftPart actor={actor} my_account={my_account} />
+          <LeftPart userData={userData} actor={actor} my_account={my_account} />
           <RightPart chartData={chartData} />
         </div>
 
         {/* Add New Project Section */}
       
-        <div className='mt-12 flex justify-end'>
+        <div className='mt-8 flex justify-end'>
            <FormDialog addProject={addProject} /> 
         </div>
 
         {/* Participated Projets */}
 
-        <div className="mt-8 card px-4 py-8 rounded-lg">
+        <div className="mt-4 mb-12 card px-4 py-8 rounded-lg">
           <h1 className="text-lg mt-1 mb-8 font-medium drop-shadow-xl text-orange-600">Participated Projects & Amount Received</h1>
           
           <div className="px-4 ">
@@ -116,7 +116,7 @@ function BenifactorPage( {my_account, actor, deployed_contract} ) {
 
         {/* All Projets */}
 
-        <div className="mt-8 mb-8 card p-4 py-8 rounded-lg">
+        <div className="mb-8 card p-4 py-8 rounded-lg">
           <h1 className="text-lg mt-1 mb-8 font-medium drop-shadow-xl text-orange-600">Approved Projects</h1>
           
           <div className="px-4">

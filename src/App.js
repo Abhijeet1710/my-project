@@ -5,6 +5,8 @@ import Navbar from './components/Layout Pages/Navbar';
 import StartPage from './components/Layout Pages/StartPage';
 import Footer from "./components/Actor pages/Inside Components/Footer";
 import Navbar2 from "./components/Layout Pages/Navbar2";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import LearnPage from "./components/Layout Pages/LearnPage";
 
 function App() {
 
@@ -53,11 +55,25 @@ function App() {
   }, []);
 
   return (
-    <div className="overflow-x-hidden main-page">
+      <>
         {/* <Navbar2 my_account={account} /> */}
-        <StartPage my_account={account} deployed_contract={deployedContract} />
-        <Footer />
-      </div>
+        <Routes>
+         <Route path="/" exact 
+         element={ 
+          <div className="overflow-x-hidden main-page">
+            <StartPage my_account={account} deployed_contract={deployedContract} />
+            <Footer />
+          </div>
+          } /> 
+         <Route path="/Learn-More" exact 
+         element={ 
+          <>
+            <LearnPage />
+          </> 
+          } /> 
+        </Routes>
+
+      </>
   );
 }
 
